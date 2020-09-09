@@ -1,11 +1,18 @@
 <template>
   <div class="q-pa-md">
-    <q-table
-        :data="tableDataSource"
-        :columns="columns"
-        rows-per-page-options=""
-        row-key="name"
-    />
+
+
+
+        <q-table
+            title="Denúncias"
+            :data="tableDataSource.list"
+            :columns="columns"
+            :pagination="tableDataSource.pagination"
+            @row-dblclick="(evt, row, index) => eventQueue(row.codigo)"
+            row-key="codigo"
+
+        />
+
   </div>
 </template>
 
@@ -14,9 +21,7 @@ export default {
   name: "Listagem",
   props:{
     tableDataSource : {
-      type: Array,
-      required: false,
-      default: new Array()
+      type: Object
     }
   },
   data () {

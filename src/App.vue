@@ -1,4 +1,7 @@
 <template>
+  <div>
+
+
   <q-layout view="lhr Lpr ffr">
     <q-header elevated class="glossy">
       <q-toolbar>
@@ -31,28 +34,35 @@
     </q-footer>
 
     <q-page-container>
-      <component :is=""/>
-      <HelloWorld />
+      <Listagem v-if="selectedStore.selectedMenu === 'menu1'" :table-data-source="selectedStore.listDataSource"/>
+      <Cadastro v-if="selectedStore.selectedMenu === 'menu2'" :register="selectedStore.formDataSource"/>
     </q-page-container>
+
+
+
   </q-layout>
+
+  </div>
+
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import MenuApp from './components/Menu.vue'
+import MenuApp from './components/Menu'
+import Listagem from './components/Listagem'
+import Cadastro from './components/Cadastro'
 
 export default {
   name: 'LayoutDefault',
 
   components: {
-    HelloWorld, MenuApp
+    MenuApp, Listagem, Cadastro
   },
 
   data () {
     return {
       leftDrawerOpen: false,
       story1 : {
-        selectedMenu: 'menu2',
+        selectedMenu: 'menu1',
         menuDataSource : [
           {
             key: 'menu1',
@@ -92,32 +102,62 @@ export default {
               tipo: 'Iluminação',
               bairro: 'Ibirama',
               resumo: 'Lâmpada queimada'
+            },
+            {
+              codigo: 5,
+              tipo: 'Rua',
+              bairro: 'Jardim das Américas',
+              resumo: 'Tem um burraco no asfalto'
+            },
+            {
+              codigo: 6,
+              tipo: 'Praça',
+              bairro: 'Centro',
+              resumo: 'Banco quebrado'
+            },
+            {
+              codigo: 7,
+              tipo: 'Rua',
+              bairro: 'Vila Madalena',
+              resumo: 'Bueiro entupido'
+            },
+            {
+              codigo: 8,
+              tipo: 'Iluminação',
+              bairro: 'Ibirama',
+              resumo: 'Lâmpada queimada'
             }
           ],
           pagination : {
             sortBy: 'codigo',
-            descending: false,
-            page: 2,
+            descending: true,
+            page: 1,
             rowsPerPage: 10
           }
         }
       },
       story2 : {
-        selectedMenu: 'menu1',
+        selectedMenu: 'menu2',
         menuDataSource : [
           {
             key: 'menu1',
             icon: 'list',
-            title: 'Teste menu 1',
-            description: 'Teste menu 1'
+            title: 'Denúncias',
+            description: 'Lista de Denúncias'
           },
           {
             key: 'menu2',
             icon: 'editor',
-            title: 'Teste menu 2',
-            description: 'Teste menu 2'
+            title: 'Nova Denúncia',
+            description: 'Cadastro de novas denúncias'
           }
-        ]
+        ],
+        formDataSource : {
+          codigo : 1,
+          tipo: 'Praça',
+          bairro: 'Centro',
+          resumo: 'Vandalismo de placas'
+        }
       },
       selectedStore : this.story1
     }
@@ -125,6 +165,7 @@ export default {
 
   methods: {
     render(obj) {
+ 
       alert(obj)
     }
   },
