@@ -1,7 +1,5 @@
 <template>
   <div>
-
-
   <q-layout view="lhr Lpr ffr">
     <q-header elevated class="glossy">
       <q-toolbar>
@@ -26,7 +24,8 @@
       show-if-above
       bordered
       content-class="bg-grey-2">
-      <menu-app :menu-data-source="selectedStore.menuDataSource" :selected-menu="selectedStore.selectedMenu"/>
+<!--      <menu-app :menu-data-source="selectedStore.menuDataSource" :selected-menu="selectedStore.selectedMenu"/>-->
+      <menu-app/>
     </q-drawer>
 
     <q-footer>
@@ -34,11 +33,11 @@
     </q-footer>
 
     <q-page-container>
-      <Listagem v-if="selectedStore.selectedMenu === 'menu1'" :table-data-source="selectedStore.listDataSource"/>
-      <Cadastro v-if="selectedStore.selectedMenu === 'menu2'" :register="selectedStore.formDataSource"/>
+<!--      <Listagem v-if="selectedMenu === 'menu1'" :table-data-source="selectedStore.listDataSource"/>-->
+      <Listagem v-if="selectedMenu === 'menu1'"/>
+<!--      <Cadastro v-if="selectedMenu === 'menu2'" :register="selectedStore.formDataSource"/>-->
+      <Cadastro v-if="selectedMenu === 'menu2'"/>
     </q-page-container>
-
-
 
   </q-layout>
 
@@ -51,11 +50,21 @@ import MenuApp from './components/Menu'
 import Listagem from './components/Listagem'
 import Cadastro from './components/Cadastro'
 
+import {mapGetters, mapMutations} from 'vuex'
+
 export default {
   name: 'LayoutDefault',
 
   components: {
     MenuApp, Listagem, Cadastro
+  },
+
+  computed : {
+    ...mapGetters('menu',
+        {
+          selectedMenu: 'getSelectedMenu'
+        }
+    )
   },
 
   data () {
@@ -164,20 +173,18 @@ export default {
   },
 
   methods: {
-    render(obj) {
- 
-      alert(obj)
-    }
+    ...mapMutations(['updateStory']),
   },
 
   mounted() {
     this.selectedStore = this.story1
 
     window.addEventListener("keypress", (e) => {
-      console.log(e.shiftKey)
-      console.log(e.key);
-      if (e.shiftKey && e.key === 'L') {
+      if (e.shiftKey && (e.key === 'L' || e.key === 'l')) {
         this.selectedStore = this.selectedStore == this.story1 ? this.story2 : this.story1
+
+        this.updateStory(this.selectedStore)
+
       }
     });
   }

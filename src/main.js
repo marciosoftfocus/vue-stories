@@ -1,18 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
+import store from './stores/store'
 import './quasar'
 
 Vue.config.productionTip = false
 
-Vue.mixin({
-    methods: {
-            eventQueue(vlr) {
-                App.methods.render(vlr)
-            }
-        }
-    }
-)
-
 new Vue({
+  store: store,
   render: h => h(App),
 }).$mount('#app')
