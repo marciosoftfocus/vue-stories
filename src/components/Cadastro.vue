@@ -71,29 +71,16 @@ export default {
       denunciaEmEdicao: 'getDenunciaEmEdicao'
     }),
 
-    denuncia : {
-      get() {
-        let valor = this.$store.getters["denuncia/getDenunciaEmEdicao"]
-        if (valor === null) {
-          valor = {}
-          valor.codigo = ''
-          valor.tipo = ''
-          valor.bairro = ''
-          valor.resumo = ''
-          this.$store.commit('denuncia/setDenunciaEmEdicao', valor)
-        }
-        return valor
-      },
-
-      set(newValue) {
-        this.$store.commit('denuncia/setDenunciaEmEdicao', newValue)
-      }
-    }
-
   },
 
   data() {
     return {
+      denuncia: {
+        codigo : '',
+        tipo : '',
+        bairro : '',
+        resumo : ''
+      },
       alert: false,
       msgSucesso: null,
       tipos: ["Rua", "Iluminação", "Praça"]
@@ -102,29 +89,38 @@ export default {
 
 
   methods: {
+    ...mapGetters('denuncia', ['getDenunciaEmEdicao']),
     ...mapActions('denuncia', ["addDenuncia", "updateDenuncia"]),
-    ...mapMutations('denuncia', ["setDenunciaEmEdicao"]),
     ...mapMutations('menu', ["updateSelectedMenu"]),
+    ...mapMutations('denuncia', ['setDenunciaEmEdicao']),
 
     onSubmit () {
-      const valor = this.denuncia
-
-      if (valor.codigo === '') {
-        this.addDenuncia(valor)
+      if (this.denuncia.codigo === '') {
+        this.addDenuncia(this.denuncia)
       } else {
-        this.updateDenuncia(valor)
+        this.updateDenuncia(this.denuncia)
       }
       this.msgSucesso = "Operação executada com sucesso"
       this.alert = true
     },
 
     onReset () {
-
+      this.voltarListagem()
     },
 
     voltarListagem() {
       this.updateSelectedMenu('menu1')
       this.setDenunciaEmEdicao(null)
+    }
+  },
+
+  async created() {
+    let denunciaEmEdicao = this.getDenunciaEmEdicao()
+    if (denunciaEmEdicao !== null) {
+      this.denuncia.codigo = denunciaEmEdicao.codigo
+      this.denuncia.tipo = denunciaEmEdicao.tipo
+      this.denuncia.bairro = denunciaEmEdicao.bairro
+      this.denuncia.resumo = denunciaEmEdicao.resumo
     }
   }
 

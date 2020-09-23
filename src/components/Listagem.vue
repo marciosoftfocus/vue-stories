@@ -107,7 +107,7 @@ export default {
         this.alert = true
       } else {
         this.operacao = 'excluir'
-        this.mensagemConfirmAlert = 'Nenhum valor selecionado para exclusão'
+        this.mensagemConfirmAlert = 'Confirma a exclusão do(s) iten(s) selecionado(s) ?'
         this.confirm = true
       }
     },
